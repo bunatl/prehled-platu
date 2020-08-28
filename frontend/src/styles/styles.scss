@@ -1,0 +1,32 @@
+// Variables
+
+
+// Layout
+body{
+    font-family: "Playfair Display", "Arvo", Georgia, "Times New Roman", serif;
+    background: lightgrey;
+}
+
+#root{
+    margin: 0 auto;
+    width: 80%;
+    background: darkgray;
+
+    // header, main, footer
+
+    main{
+        >input{
+            font-size: 1.5em;
+            padding: .25em .5em;
+            border: 1px solid lightgrey;
+            border-radius: .3em;
+        }
+    }
+}
+
+
+
+// imports
+@import './header';
+@import './index';
+@import './footer';

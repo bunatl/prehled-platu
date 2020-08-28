@@ -29,6 +29,11 @@ const handleToogles = (toogleState: Toogles, actions: ToogleActions) => {
                 ...toogleState,
                 technologies: !toogleState.technologies
             };
+        case 'map':
+            return {
+                ...toogleState,
+                map: !toogleState.map
+            };
         default:
             return initToogle;
     }
@@ -37,10 +42,20 @@ const handleToogles = (toogleState: Toogles, actions: ToogleActions) => {
 const Params: React.FC = () => {
     const [ toogle, dispatch ] = useReducer(handleToogles, initToogle)
 
+    // technologies
     const [ technologies ] = useState<string[]>([
         "ReactJS", "Node.js", "C++", "JAVA"
     ]);
-    const wrappertechnologies = useRef<HTMLDivElement>(null);
+    const wrapperTechnologies = useRef<HTMLDivElement>(null);
+
+    // companies
+    // companies will fecthed from DB - only top 10
+    const [ companies ] = useState<string[]>([
+        "Google", "Microsoft", "Oracle", "Tesla"
+    ]);
+    const wrapperCompanies = useRef<HTMLDivElement>(null);
+
+    // const wrapperCompanies = useRef<HTMLDivElement>(null);
 
     return (
         <div id="parameters">
@@ -48,17 +63,41 @@ const Params: React.FC = () => {
                 <span
                     className="name-placeholder-technologies"
                     onClick={() => dispatch({ type: 'technologies' })}
-                >Technologies</span>
+                >Technologie</span>
                 {toogle.technologies === true
                     ?
                     technologies.map((tech, i) => (
-                        <div className="custom-control custom-checkbox" ref={wrappertechnologies}>
+                        <div className="custom-control custom-checkbox" ref={wrapperTechnologies}>
                             <input type="checkbox" className="custom-control-input" id={`checkbox-${tech}`} />
                             <label className="custom-control-label" htmlFor={`checkbox-${tech}`}>{tech}</label>
                         </div>
                     ))
                     : ''
                 }
+            </div>
+
+            <div id="companies">
+                <span
+                    className="name-placeholder-companies"
+                    onClick={() => dispatch({ type: 'companies' })}
+                >Společnosti</span>
+                {toogle.company === true
+                    ?
+                    companies.map((company, i) => (
+                        <div className="custom-control custom-checkbox" ref={wrapperCompanies}>
+                            <input type="checkbox" className="custom-control-input" id={`checkbox-${company}`} />
+                            <label className="custom-control-label" htmlFor={`checkbox-${company}`}>{company}</label>
+                        </div>
+                    ))
+                    : ''
+                }
+            </div>
+
+            <div id="map">
+                <span
+                    onClick={() => dispatch({ type: 'map' })}
+                >Mapa</span>
+                {toogle.map === true ? 'Map' : ''}
             </div>
         </div>
     );

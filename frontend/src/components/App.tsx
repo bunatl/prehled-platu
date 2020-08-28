@@ -5,6 +5,8 @@ import PageHeader from './PageHeader'
 import MainContent from './MainContent'
 import Footer from './Footer'
 
+import '../styles/styles.scss'
+
 function App() {
   return (
     <div>
