@@ -1,0 +1,50 @@
+.salaryEntry{
+    border: 1px solid black;
+    padding: .5em;
+    
+    >div{
+        width: 100%;
+    }
+
+    .title{
+        font-size: 2em;
+    }
+
+    .technologies{
+        @include flex(row, wrap, space-between);
+
+        margin: .5em auto;
+
+        .tech{
+            background: lightgrey;
+            border: 1px solid white;
+            padding: .25em .5em;
+            border-radius: .5em;
+
+            text-align: center;
+            min-width: 5em;
+            font-size: 1.15em;
+        }
+    }
+
+    $selectorWidth: "25%";
+    .salarySection{
+        @include flex(row, wrap, space-between);
+        
+        .selectors{
+            width: $selectorWidth;
+
+            select{
+                font-size: 1.15em;
+                border-radius: .25em;
+                padding: .25em;
+                width: 100%;
+            }
+        }
+
+        .salaryScale{
+            border: 1px solid green;
+            width: calc( 100% - #{ $selectorWidth } - 5% );
+        }
+    }
+}

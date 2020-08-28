@@ -55,6 +55,7 @@ const Params: React.FC = () => {
     ]);
     const wrapperCompanies = useRef<HTMLDivElement>(null);
 
+    // wrapper map
     // const wrapperCompanies = useRef<HTMLDivElement>(null);
 
     return (

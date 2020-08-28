@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Params from './Params'
+import SalaryEntry from './SalaryEntry'
 
 const MainContent: React.FC = () => {
     return (
@@ -10,6 +11,8 @@ const MainContent: React.FC = () => {
                 placeholder="Hledání"
             ></input>
             <Params />
+
+            <SalaryEntry />
         </main>
     );
 }

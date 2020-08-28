@@ -1,5 +1,10 @@
 // Variables
-
+@mixin flex($direction, $wrap, $content){
+    display: flex;
+    flex-direction: $direction;
+    flex-wrap: $wrap;
+    justify-content: $content ;
+}
 
 // Layout
 body{
@@ -9,6 +14,7 @@ body{
 
 #root{
     margin: 0 auto;
+    padding: 1.5em;
     width: 80%;
     background: darkgray;
 
@@ -21,12 +27,16 @@ body{
             border: 1px solid lightgrey;
             border-radius: .3em;
         }
+
+        #parameters{
+            width: 40%;
+            @include flex(row, nowrap, space-between);
+        }
     }
 }
-
-
 
 // imports
 @import './header';
 @import './index';
+@import './salaryEntry';
 @import './footer';

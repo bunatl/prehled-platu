@@ -5,7 +5,9 @@ const PageHeader: React.FC = () => {
         <header>
             <h1>Prehled platu</h1>
             <nav>
-                navigation
+                <div>Domu</div>
+                <div>Link</div>
+                <div>Přidej záznam</div>
             </nav>
         </header>
     );
