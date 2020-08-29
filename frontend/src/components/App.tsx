@@ -5,7 +5,9 @@ import PageHeader from './PageHeader'
 import MainContent from './MainContent'
 import Footer from './Footer'
 
+// styles
 import '../styles/styles.scss'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (

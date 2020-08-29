@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+import NewSalaryEntry from './NewSalaryEntry'
 
 const PageHeader: React.FC = () => {
+    const [ modal, setModal ] = useState<boolean>(false);
+
     return (
         <header>
             <nav>
@@ -8,8 +12,9 @@ const PageHeader: React.FC = () => {
                 <div>
                     <div>Domu</div>
                     <div>Link</div>
-                    <div>Přidej záznam</div>
+                    <div onClick={() => setModal(true)}>Přidej záznam</div>
                 </div>
+                <NewSalaryEntry navBool={modal} closeModal={() => setModal(false)} />
             </nav>
             <h1>Prehled platu</h1>
         </header>

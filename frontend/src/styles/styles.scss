@@ -6,10 +6,17 @@
     justify-content: $content ;
 }
 
+// imports
+@import './header';
+@import './index';
+@import './salaryEntry';
+@import './newSalaryEntry';
+@import './footer';
+
 // Layout
 body{
-    font-family: "Playfair Display", "Arvo", Georgia, "Times New Roman", serif;
-    background: lightgrey;
+    // font-family: "Playfair Display", "Arvo", Georgia, "Times New Roman", serif;
+    background: lightgrey !important;
 }
 
 #root{
@@ -25,9 +32,3 @@ body{
         margin-top: 1em
     }
 }
-
-// imports
-@import './header';
-@import './index';
-@import './salaryEntry';
-@import './footer';
