@@ -17,21 +17,12 @@ body{
     padding: 1.5em;
     width: 80%;
     background: darkgray;
+    border-radius: .75em;
 
     // header, main, footer
 
-    main{
-        >input{
-            font-size: 1.5em;
-            padding: .25em .5em;
-            border: 1px solid lightgrey;
-            border-radius: .3em;
-        }
-
-        #parameters{
-            width: 40%;
-            @include flex(row, nowrap, space-between);
-        }
+    footer{
+        margin-top: 1em
     }
 }
 

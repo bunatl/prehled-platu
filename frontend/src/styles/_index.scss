@@ -1,0 +1,19 @@
+main{
+        #searchSection{
+            >input{
+                font-size: 1.5em;
+                padding: .25em .5em;
+                border: 1px solid lightgrey;
+                border-radius: .3em;
+                width: 100%;
+                // input insed parent div: https://stackoverflow.com/questions/1633522/html-input-element-wider-than-containing-div
+                box-sizing: border-box;
+            }
+
+            #parameters{
+                margin: .5em auto 1em auto;
+                width: 80%;
+                @include flex(row, nowrap, space-around);
+            }
+        }
+    }

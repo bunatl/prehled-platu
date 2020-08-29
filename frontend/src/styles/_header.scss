@@ -1,0 +1,22 @@
+header{
+    nav{
+        @include flex ( row, nowrap, space-between);
+        // prevent following content to move down on div hover
+        min-height: 2em;
+
+        // right side of the nav
+        >div:nth-child(2)>div{
+            @include flex ( row, nowrap, space-between);
+            margin-left: 1.5em;
+            display: inline-block;
+            
+            &:hover{
+                border-bottom: 1px solid black;
+                padding-bottom: .25em;
+                font-weight: bold;
+                transform: scale(1.1);
+                cursor: pointer;
+            }
+        }
+    }
+}
