@@ -74,7 +74,7 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
                         <InputGroup.Prepend>
                             <InputGroup.Text>Popis</InputGroup.Text>
                         </InputGroup.Prepend>
-                        <FormControl as="textarea" aria-label="modalInputDescription" />
+                        <FormControl as="textarea" style={{}} aria-label="modalInputDescription" />
                     </InputGroup>
                 </div>
                 {/* location, year - date picker, salary */}
@@ -105,18 +105,21 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
                 </div>
 
                 <div className="modalDate">
-                    Datum nástupu
-                    <DatePicker
-                        id="dateInput"
-                        closeOnScroll={true}
-                        dateFormat="📅 dd.MM.yyyy"
-                        // locale="cs-CZ"
-                        withPortal
-                        selected={pickerDate.startDate}
-                        // future rates rates aren't available
-                        maxDate={new Date()}
-                        onChange={(date: Date) => setPickerDate({ startDate: date })}
-                    />
+                    <div className="date">
+                        <span>Datum nástupu</span>
+                        <DatePicker
+                            id="dateInput"
+                            closeOnScroll={true}
+                            dateFormat="📅 dd.MM.yyyy"
+                            // locale="cs-CZ"
+                            withPortal
+                            selected={pickerDate.startDate}
+                            // future rates rates aren't available
+                            maxDate={new Date()}
+                            onChange={(date: Date) => setPickerDate({ startDate: date })}
+                        />
+                    </div>
+
 
                     <Form.Group controlId="exampleForm.SelectCustomSizeSm">
                         <Form.Label>Délka doby výkonu (v letech)</Form.Label>

@@ -5,11 +5,37 @@
             width: 100%;
             display: inline;
             text-align: center;
-            vertical-align: middle
         }
     }
 
-    .modalDescription{
+    .modalDescription {
         margin-bottom: 1em;
+
+        $descriptionFieldHeight: 5em;
+        > .input-group{
+            min-height: $descriptionFieldHeight !important;
+            
+            textarea {
+                min-height: $descriptionFieldHeight;
+            }
+        }
+
+    }
+
+    .modalDate{
+        @include flex(row, nowrap, space-between);
+
+        >div{
+            width: 45%;
+        }
+
+        > .date > span{
+            display: inline-block;
+            margin-bottom: .5em;
+        }
+    }
+
+    .modalFooter{
+        @include flex(row, nowrap, space-between !important);
     }
 }
