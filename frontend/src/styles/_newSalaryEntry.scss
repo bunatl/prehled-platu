@@ -23,19 +23,31 @@
     }
 
     .modalDate{
-        @include flex(row, nowrap, space-between);
+        @include flex(column, nowrap, space-between);
 
         >div{
-            width: 45%;
+            width: 100%;
+            max-width: 20em;
+            text-align: center;
+            margin: 0 auto;
         }
 
         > .date > span{
             display: inline-block;
             margin-bottom: .5em;
         }
+
+        @media only screen and (min-width: $desktop-width){
+            @include flex(row, nowrap, space-between);
+
+            >div{
+                width: 45%;
+            }
+        }
     }
 
-    .modalFooter{
-        @include flex(row, nowrap, space-between !important);
+    .modal-footer{
+        @include flex(row, wrap, space-between !important);
+        background: lightgray;
     }
 }

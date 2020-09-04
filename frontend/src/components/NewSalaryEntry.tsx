@@ -11,6 +11,8 @@ import {
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const axios = require('axios');
+
 interface NewSalaryEntryProps {
     navBool: boolean;
     closeModal: () => void;
@@ -34,6 +36,17 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
     const close = () => {
         setShow(false);
         closeModal();
+    }
+
+    const insertAndClose = async () => {
+        alert("invoked")
+        try {
+            const response = await axios.get('http://localhost:3333/api/salary/all');
+            console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
+        close();
     }
 
     return (
@@ -133,7 +146,7 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={close}>Zavřít</Button>
-                <Button onClick={close}>Přidej záznam</Button>
+                <Button onClick={insertAndClose}>Přidej záznam</Button>
             </Modal.Footer>
         </Modal>
     );

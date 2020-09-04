@@ -6,12 +6,16 @@
     justify-content: $content ;
 }
 
+$mobile-width: 480px;
+$desktop-width: 768px;
+
 // imports
 @import './header';
 @import './index';
 @import './salaryEntry';
 @import './newSalaryEntry';
 @import './footer';
+
 
 // Layout
 body{

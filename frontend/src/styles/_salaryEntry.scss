@@ -9,18 +9,20 @@
     }
 
     .title{
-        font-size: 2em;
+        font-size: unquote('min(4.5vw, 2em)');
+        margin-bottom: .5em;
+        font-weight: bold;
     }
 
     .description{
         padding: 1em .5em;
         font-style: italic;
+        text-align: justify;
     }
 
     .technologies{
-        @include flex(row, wrap, space-between);
-
-        margin: .5em auto;
+        @include flex(row, wrap, center);
+        gap: 1em;
 
         .tech{
             background: lightgrey;
@@ -34,12 +36,26 @@
         }
     }
 
-    $selectorWidth: "25%";
     .salarySection{
-        @include flex(row, wrap, space-between);
+        @include flex(column, wrap, center);
+        column-gap: 1em;
+        
+        @media only screen and (min-width: $desktop-width){
+            @include flex(row, nowrap, center);
+        }
+        
+        > div{
+            margin: 0 auto;
+            width: 100%;
+            text-align: center;
+
+            @media only screen and (min-width: $desktop-width){
+                text-align: left;
+            }
+        }
         
         .selectors{
-            width: $selectorWidth;
+            max-width: 15em;
 
             select{
                 font-size: 1.15em;
@@ -47,11 +63,6 @@
                 padding: .25em;
                 width: 100%;
             }
-        }
-
-        .salaryScale{
-            border: 1px solid green;
-            width: calc( 100% - #{ $selectorWidth } - 5% );
         }
     }
 }
