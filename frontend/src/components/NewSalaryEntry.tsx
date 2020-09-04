@@ -39,7 +39,6 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
     }
 
     const insertAndClose = async () => {
-        alert("invoked")
         try {
             const response = await axios.get('http://localhost:3333/api/salary/all');
             console.log(response);
@@ -132,7 +131,6 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
                             onChange={(date: Date) => setPickerDate({ startDate: date })}
                         />
                     </div>
-
 
                     <Form.Group controlId="exampleForm.SelectCustomSizeSm">
                         <Form.Label>Délka doby výkonu (v letech)</Form.Label>

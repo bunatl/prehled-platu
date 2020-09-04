@@ -4,6 +4,9 @@ const schema = Joi.object({
     position: Joi.string()
         .required(),
 
+    company: Joi.string()
+        .required(),
+
     technologies: Joi.string()
         .required(),
 

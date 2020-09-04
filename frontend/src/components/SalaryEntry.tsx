@@ -1,25 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-interface Salary {
-    position: string;
-    company: string;
-    technologies: string[];
-    description: string;
-    location: string;
-    date: Date;
-    salary: number;
+import { ISalary } from './MainContent';
+
+interface ISalaryEntry {
+    salary: ISalary;
 }
 
-const SalaryEntry: React.FC = () => {
-    const [ salary ] = useState<Salary>({
-        position: "SW Engineer",
-        company: "Bunat s.r.o",
-        technologies: [ "ReactJS", "Node.js", "npm", "SCSS", "TypeScript" ],
-        description: "Very talented and perspective web developer",
-        location: "Prague, Czech Republic",
-        date: new Date(),
-        salary: 75000
-    });
+const SalaryEntry: React.FC<ISalaryEntry> = ({ salary }) => {
+
+    // console.log(salary);
 
     // will fetch from DB in useEffect
     const years = [
