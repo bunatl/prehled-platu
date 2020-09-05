@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 
 import NewSalaryEntry from './NewSalaryEntry'
 
-const PageHeader: React.FC = () => {
+interface IPageHeader {
+    updateEntries: () => void
+}
+
+const PageHeader: React.FC<IPageHeader> = ({ updateEntries }) => {
     const [ modal, setModal ] = useState<boolean>(false);
 
     return (
@@ -14,7 +18,7 @@ const PageHeader: React.FC = () => {
                     <div>Link</div>
                     <div onClick={() => setModal(true)}>Přidej záznam</div>
                 </div>
-                <NewSalaryEntry navBool={modal} closeModal={() => setModal(false)} />
+                <NewSalaryEntry navBool={modal} entryInserted={() => updateEntries()} closeModal={() => setModal(false)} />
             </nav>
             <h1>Prehled platu</h1>
         </header>

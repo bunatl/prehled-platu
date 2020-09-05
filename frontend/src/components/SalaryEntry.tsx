@@ -8,8 +8,6 @@ interface ISalaryEntry {
 
 const SalaryEntry: React.FC<ISalaryEntry> = ({ salary }) => {
 
-    // console.log(salary);
-
     // will fetch from DB in useEffect
     const years = [
         { value: "2020", text: "2020" },

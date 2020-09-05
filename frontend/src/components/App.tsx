@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // import module
 import PageHeader from './PageHeader'
@@ -10,10 +10,11 @@ import '../styles/styles.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+  const [ update, setUpdate ] = useState<boolean>(false);
   return (
     <div>
-      <PageHeader />
-      <MainContent />
+      <PageHeader updateEntries={() => setUpdate(!update)} />
+      <MainContent fetchDatabase={update} />
       <Footer />
     </div>
   );

@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
+
+import { ISalary } from './MainContent'
 
 import {
     Modal,
@@ -13,8 +15,9 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const axios = require('axios');
 
-interface NewSalaryEntryProps {
+interface INewSalaryEntryProps {
     navBool: boolean;
+    entryInserted: () => void;
     closeModal: () => void;
 }
 
@@ -22,7 +25,76 @@ interface IPickerDate {
     startDate: Date;
 }
 
-const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) => {
+const initModalInputs: ISalary = {
+    position: "",
+    company: "",
+    description: "",
+    location: "",
+    technologies: [],
+    firstWorkDay: new Date(),
+    salary: 0,
+    yearsWorked: 1,
+    id: ""
+}
+
+type ActionTypes =
+    | { type: 'position'; inputValue: string }
+    | { type: 'company'; inputValue: string }
+    | { type: 'description'; inputValue: string }
+    | { type: 'location'; inputValue: string }
+    | { type: 'technologies'; inputValue: string }
+    | { type: 'firstWorkDay'; inputValue: Date }
+    | { type: 'salary'; inputValue: number }
+    | { type: 'yearsWorked'; inputValue: number }
+
+const modalInputReducer = (state: ISalary, action: ActionTypes) => {
+    switch (action.type) {
+        case 'position':
+            return {
+                ...state,
+                position: action.inputValue
+            };
+        case 'company':
+            return {
+                ...state,
+                company: action.inputValue
+            };
+        case 'description':
+            return {
+                ...state,
+                description: action.inputValue
+            };
+        case 'location':
+            return {
+                ...state,
+                location: action.inputValue
+            };
+        case 'technologies':
+            return {
+                ...state,
+                technologies: [ action.inputValue ]
+            };
+        case 'firstWorkDay':
+            return {
+                ...state,
+                firstWorkDay: action.inputValue
+            };
+        case 'salary':
+            return {
+                ...state,
+                salary: action.inputValue
+            };
+        case 'yearsWorked':
+            return {
+                ...state,
+                yearsWorked: action.inputValue
+            };
+        default:
+            return initModalInputs;
+    }
+}
+
+const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted, closeModal }) => {
     const [ pickerDate, setPickerDate ] = useState<IPickerDate>({
         startDate: new Date()
     });
@@ -38,13 +110,22 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
         closeModal();
     }
 
+    const [ modalInputs, dispatch ] = useReducer(modalInputReducer, initModalInputs);
+
     const insertAndClose = async () => {
         try {
-            const response = await axios.get('http://localhost:3333/api/salary/all');
-            console.log(response);
+            const response = await axios({
+                method: 'POST',
+                eaders: {
+                    'Content-Type': 'application/json',
+                },
+                url: `${process.env.SERVER_URL}/api/salary/add`,
+                data: modalInputs
+            });
         } catch (error) {
             console.error(error);
         }
+        entryInserted();
         close();
     }
 
@@ -64,6 +145,27 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
                             placeholder="Software Engineer"
                             aria-label="position"
                             aria-describedby="modalInputPosition"
+                            onChange={e => dispatch({
+                                type: 'position',
+                                inputValue: e.target.value
+                            })}
+                        />
+                    </InputGroup>
+                </div>
+                {/* Company */}
+                <div className="modalCompany">
+                    <InputGroup className="mb-3">
+                        <InputGroup.Prepend>
+                            <InputGroup.Text>Společnost</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl
+                            placeholder="Company s.r.o."
+                            aria-label="company"
+                            aria-describedby="modalInputCompany"
+                            onChange={e => dispatch({
+                                type: 'company',
+                                inputValue: e.target.value
+                            })}
                         />
                     </InputGroup>
                 </div>
@@ -77,6 +179,10 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
                             placeholder="ReactJS, nodejs, AutoCAD"
                             aria-label="technologies"
                             aria-describedby="modalInputTechnologies"
+                            onChange={e => dispatch({
+                                type: 'technologies',
+                                inputValue: e.target.value
+                            })}
                         />
                     </InputGroup>
                 </div>
@@ -99,6 +205,10 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
                             placeholder="Město, Kraj"
                             aria-label="location"
                             aria-describedby="modalInputLocation"
+                            onChange={e => dispatch({
+                                type: 'location',
+                                inputValue: e.target.value
+                            })}
                         />
                     </InputGroup>
                 </div>
@@ -112,6 +222,10 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
                             placeholder="50 000"
                             aria-label="salary"
                             aria-describedby="modalInputSalary"
+                            onChange={e => dispatch({
+                                type: 'salary',
+                                inputValue: parseInt(e.target.value, 10)
+                            })}
                         />
                     </InputGroup>
                 </div>
@@ -128,15 +242,25 @@ const NewSalaryEntry: React.FC<NewSalaryEntryProps> = ({ navBool, closeModal }) 
                             selected={pickerDate.startDate}
                             // future rates rates aren't available
                             maxDate={new Date()}
-                            onChange={(date: Date) => setPickerDate({ startDate: date })}
+                            onChange={(date: Date) => {
+                                setPickerDate({ startDate: date });
+                                dispatch({
+                                    type: 'firstWorkDay',
+                                    inputValue: date
+                                })
+                            }}
                         />
                     </div>
 
                     <Form.Group controlId="exampleForm.SelectCustomSizeSm">
                         <Form.Label>Délka doby výkonu (v letech)</Form.Label>
-                        <Form.Control as="select" size="sm" custom>
+                        <Form.Control as="select" custom
+                            onChange={e => dispatch({
+                                type: 'yearsWorked',
+                                inputValue: parseInt(e.target.value, 10)
+                            })}>
                             {Array(15).fill(0).map((v, i) => (
-                                <option key={i}>{1 + i}</option>
+                                <option key={i} value={1 + i}>{1 + i}</option>
                             ))}
                         </Form.Control>
                     </Form.Group>

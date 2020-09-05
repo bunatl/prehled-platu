@@ -42,6 +42,7 @@ router.get('/salary/:id', async (req, res, next) => {
 
 router.post('/salary/add', async (req, res, next) => {
     try {
+        console.log(req.body);
         // validate input
         const result = await SalaryEntrySchema.validateAsync(req.body);
         // search if entry already exists in DB
@@ -63,10 +64,11 @@ router.post('/salary/add', async (req, res, next) => {
         });
     }
     catch (err) {
+        console.log(err);
         res.status(422);
         res.json({
             msg: "An Error has occcured. For more info see err property.",
-            err
+            err: err.details.message
         });
     }
     db.close();

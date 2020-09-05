@@ -7,7 +7,10 @@ const schema = Joi.object({
     company: Joi.string()
         .required(),
 
-    technologies: Joi.string()
+    technologies: Joi.array()
+        .items(
+            Joi.string()
+        )
         .required(),
 
     description: Joi.string()
@@ -27,7 +30,10 @@ const schema = Joi.object({
 
     yearsWorked: Joi.number()
         .min(1)
-        .max(new Date().getFullYear() - 1993)
+        .max(new Date().getFullYear() - 1993),
+
+    id: Joi.string()
+        .allow(null, '')
 
 });
 

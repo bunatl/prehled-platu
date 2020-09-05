@@ -13,32 +13,33 @@ export interface ISalary {
     description: string;
     location: string;
     salary: number;
-    firstWorkDay: string;
+    firstWorkDay: Date;
     yearsWorked: number;
 }
 
-const MainContent: React.FC = () => {
+interface IMainContent {
+    fetchDatabase: boolean;
+}
+
+const MainContent: React.FC<IMainContent> = ({ fetchDatabase }) => {
     const [ salaries, setSalaries ] = useState<ISalary[]>([]);
 
     useEffect(() => {
         const fetchSalaries = async () => {
             try {
-                const response = await axios.get('http://localhost:3333/api/salary/all');
-
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URI}/api/salary/all`);
                 const updatedResponse = response.data.result.map((x: any) => ({
                     ...x,
-                    technologies: [ "react", "test" ],
-                    id: x._id,
-                    company: "test company"
+                    technologies: x.technologies[ 0 ].split(','),
+                    id: x._id
                 }))
-
                 setSalaries(updatedResponse);
             } catch (error) {
-                console.error(error);
+                console.error(error.err);
             }
         }
         fetchSalaries();
-    }, [])
+    }, [ fetchDatabase ])
 
     return (
         <main>
