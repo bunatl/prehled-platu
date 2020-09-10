@@ -19,11 +19,9 @@ router.get('/salary/:id', async (req, res, next) => {
         await salaries.find(searchParam)
             .then((doc) => {
                 // if no document/s was/were found, notify
-                if (doc === null) {
-                    console.error('No entry has been found.');
-                    res.status(422);
-                    return;
-                }
+                if (doc === null)
+                    throw new Error('No entry has been found.');
+
                 res.json({
                     msg: "Your request has been processed.",
                     result: doc
@@ -31,10 +29,11 @@ router.get('/salary/:id', async (req, res, next) => {
             });
     }
     catch (err) {
+        console.log(err.message);
         res.status(422);
         res.json({
             msg: "An Error has occcured. For more info see err property.",
-            err
+            err: err.message
         });
     }
     db.close();
@@ -42,18 +41,14 @@ router.get('/salary/:id', async (req, res, next) => {
 
 router.post('/salary/add', async (req, res, next) => {
     try {
-        console.log(req.body);
         // validate input
         const result = await SalaryEntrySchema.validateAsync(req.body);
         // search if entry already exists in DB
         await salaries.findOne(result)
             .then((doc) => {
                 // document with matching criteria or null
-                if (doc !== null) {
-                    console.error(`Entry with ID: ${ doc._id } is already in DB.`);
-                    res.status(422);
-                    return;
-                }
+                if (doc !== null)
+                    throw new Error(`Entry with ID: ${ doc._id } is already in DB.`);
             });
         // if entry is unique, insert into DB
         await salaries.insert(result);
@@ -64,11 +59,11 @@ router.post('/salary/add', async (req, res, next) => {
         });
     }
     catch (err) {
-        console.log(err);
+        console.log(err.message);
         res.status(422);
         res.json({
             msg: "An Error has occcured. For more info see err property.",
-            err: err.details.message
+            err: err.message
         });
     }
     db.close();

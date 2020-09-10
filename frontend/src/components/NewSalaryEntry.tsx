@@ -72,7 +72,7 @@ const modalInputReducer = (state: ISalary, action: ActionTypes) => {
         case 'technologies':
             return {
                 ...state,
-                technologies: [ action.inputValue ]
+                technologies: action.inputValue.split(','),
             };
         case 'firstWorkDay':
             return {
@@ -119,13 +119,14 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                 eaders: {
                     'Content-Type': 'application/json',
                 },
-                url: `${process.env.SERVER_URL}/api/salary/add`,
+                url: `${process.env.REACT_APP_SERVER_URI}/api/salary/add`,
                 data: modalInputs
             });
+            if (response.status === 200)
+                entryInserted();
         } catch (error) {
-            console.error(error);
+            console.log(error.response.data.err);
         }
-        entryInserted();
         close();
     }
 

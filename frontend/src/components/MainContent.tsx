@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import SearchSection from './SearchSection'
-import SalaryEntry from './SalaryEntry'
+import SearchSection from './SearchSection';
+import SalaryEntry from './SalaryEntry';
 
 const axios = require('axios');
 
@@ -30,7 +30,7 @@ const MainContent: React.FC<IMainContent> = ({ fetchDatabase }) => {
                 const response = await axios.get(`${process.env.REACT_APP_SERVER_URI}/api/salary/all`);
                 const updatedResponse = response.data.result.map((x: any) => ({
                     ...x,
-                    technologies: x.technologies[ 0 ].split(','),
+                    // technologies: x.technologies[ 0 ].split(','),
                     id: x._id
                 }))
                 setSalaries(updatedResponse);
