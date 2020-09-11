@@ -41,11 +41,16 @@ router.get('/salary/:id', async (req, res, next) => {
 
 router.post('/salary/add', async (req, res, next) => {
     try {
+        console.log(req.body);
         // validate input
         const result = await SalaryEntrySchema.validateAsync(req.body);
+        // remove _id property from newly created salary object
+        // _id will be created on insert in BD
+        delete result._id;
         // search if entry already exists in DB
         await salaries.findOne(result)
             .then((doc) => {
+                console.log(doc);
                 // document with matching criteria or null
                 if (doc !== null)
                     throw new Error(`Entry with ID: ${ doc._id } is already in DB.`);
@@ -68,6 +73,5 @@ router.post('/salary/add', async (req, res, next) => {
     }
     db.close();
 });
-
 
 module.exports = router;

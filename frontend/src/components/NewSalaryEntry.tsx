@@ -34,7 +34,7 @@ const initModalInputs: ISalary = {
     firstWorkDay: new Date(),
     salary: 0,
     yearsWorked: 1,
-    id: ""
+    _id: ""
 }
 
 type ActionTypes =
@@ -46,6 +46,7 @@ type ActionTypes =
     | { type: 'firstWorkDay'; inputValue: Date }
     | { type: 'salary'; inputValue: number }
     | { type: 'yearsWorked'; inputValue: number }
+    | { type: ''; }
 
 const modalInputReducer = (state: ISalary, action: ActionTypes) => {
     switch (action.type) {
@@ -106,6 +107,7 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
     }, [ navBool ])
 
     const close = () => {
+        dispatch({ type: '' });
         setShow(false);
         closeModal();
     }
@@ -193,7 +195,15 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                         <InputGroup.Prepend>
                             <InputGroup.Text>Popis</InputGroup.Text>
                         </InputGroup.Prepend>
-                        <FormControl as="textarea" style={{}} aria-label="modalInputDescription" />
+                        <FormControl
+                            as="textarea"
+                            style={{}}
+                            aria-label="modalInputDescription"
+                            onChange={e => dispatch({
+                                type: 'description',
+                                inputValue: e.target.value
+                            })}
+                        />
                     </InputGroup>
                 </div>
                 {/* location, year - date picker, salary */}
@@ -247,8 +257,8 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                                 setPickerDate({ startDate: date });
                                 dispatch({
                                     type: 'firstWorkDay',
-                                    inputValue: date
-                                })
+                                    inputValue: new Date(date.getFullYear(), date.getMonth() + 1, date.getDate())
+                                });
                             }}
                         />
                     </div>

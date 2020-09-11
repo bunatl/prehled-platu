@@ -32,7 +32,7 @@ const schema = Joi.object({
         .min(1)
         .max(new Date().getFullYear() - 1993),
 
-    id: Joi.string()
+    _id: Joi.string()
         .allow(null, '')
 
 });

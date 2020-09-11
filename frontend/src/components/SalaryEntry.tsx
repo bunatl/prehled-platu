@@ -1,28 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ISalary } from './MainContent';
+
+const axios = require('axios');
 
 interface ISalaryEntry {
     salary: ISalary;
 }
 
+interface inputField {
+    value: string;
+    text: string;
+}
+
+const initInputField: inputField = {
+    value: "",
+    text: ""
+}
+
 const SalaryEntry: React.FC<ISalaryEntry> = ({ salary }) => {
 
-    // will fetch from DB in useEffect
-    const years = [
-        { value: "2020", text: "2020" },
-        { value: "2019", text: "2019" },
-        { value: "2018", text: "2018" },
-        { value: "2017", text: "2017" },
-        { value: "2016", text: "2016" },
-    ]
+    const [ locations, setLocations ] = useState<inputField[]>([ initInputField ]);
+    const [ years, setYears ] = useState<inputField[]>([ initInputField ]);
 
-    const locations = [
-        { value: "Praha", text: "Praha" },
-        { value: "Kladno, Stredocesky kraj", text: "Kladno, Stredocesky kraj" },
-        { value: "Brno, Jihomoravsky kraj", text: "Brno, Jihomoravsky kraj" },
-        { value: "Zlin, Zlinsky kraj", text: "Zlin, Zlinsky kraj" },
-    ]
+    useEffect(() => {
+        const fetchEntryData = async () => {
+            try {
+                const { data: { result: [ {
+                    location: localLocation,
+                    firstWorkDay: localFirstWorkDay,
+                    yearsWorked: localYearsWorked
+                } ] } } = await axios.get(`${process.env.REACT_APP_SERVER_URI}/api/salary/${salary._id}`);
+
+                setLocations([ {
+                    value: localLocation,
+                    text: localLocation
+                } ]);
+
+                const inputYears = `${new Date(localFirstWorkDay).getFullYear()} - ${new Date(localFirstWorkDay).getFullYear() + parseInt(localYearsWorked)}`;
+
+                setYears([ {
+                    value: inputYears,
+                    text: inputYears
+                } ]);
+            } catch (error) {
+                console.error(error.err);
+            }
+        }
+        fetchEntryData();
+    }, []);
 
     return (
         <div className="salaryEntry">
