@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Spinner from 'react-bootstrap/Spinner'
 
 import SearchSection from './SearchSection';
 import SalaryEntry from './SalaryEntry';
@@ -43,7 +44,10 @@ const MainContent: React.FC<IMainContent> = ({ fetchDatabase }) => {
     return (
         <main>
             <SearchSection />
-            {loading ? 'loading...'
+            {loading
+                ? <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
                 : salaries.map((record, i) => (
                     <SalaryEntry key={i} salary={record} />
                 ))}

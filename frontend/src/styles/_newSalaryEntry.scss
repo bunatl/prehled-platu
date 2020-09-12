@@ -20,7 +20,25 @@
                 min-height: $descriptionFieldHeight;
             }
         }
+    }
 
+    .modalEmploymentForm{
+        width: 100%;
+        // box-sizing: border-box;
+        display: inline-block;
+        .dropdown{
+            // width: calc(100% - 25%);
+            width: 60%;
+
+            @media only screen and (min-width: 460px) {
+                width: 75%;
+            }
+
+            >button{
+                width: 100%;
+                font-size: unquote('min(2.85vw, 1em)');
+            }
+        }
     }
 
     .modalDate{
@@ -36,6 +54,7 @@
         > .date > span{
             display: inline-block;
             margin-bottom: .5em;
+            margin-right: 2em;
         }
 
         @media only screen and (min-width: $desktop-width){

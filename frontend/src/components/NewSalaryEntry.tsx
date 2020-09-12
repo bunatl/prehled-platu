@@ -50,6 +50,12 @@ type ActionTypes =
     | { type: 'monthsWorked'; inputValue: number }
     | { type: ''; }
 
+type employmentFormTypes =
+    | 'Plný úvazek (HPP)'
+    | 'Poloviční úvazek'
+    | 'Dohoda o provedení práce (DPP)'
+    | 'Dohoda o provedení činnosti (DPČ)'
+
 const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted, closeModal }) => {
     const [ timeframe, setTimeframe ] = useState<boolean>(true);
     const modalInputReducer = (state: ISalary, action: ActionTypes) => {
@@ -98,13 +104,13 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                 return initModalInputs;
         }
     }
-    const [ modalInputs, dispatch ] = useReducer(modalInputReducer, initModalInputs);
 
+    const [ modalInputs, dispatch ] = useReducer(modalInputReducer, initModalInputs);
+    const [ show, setShow ] = useState<boolean>(navBool);
+    const [ employmentForm, setEmploymentForm ] = useState<employmentFormTypes>('Plný úvazek (HPP)');
     const [ pickerDate, setPickerDate ] = useState<IPickerDate>({
         startDate: new Date()
     });
-
-    const [ show, setShow ] = useState<boolean>(navBool);
 
     useEffect(() => {
         setShow(navBool);
@@ -250,6 +256,25 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                     </InputGroup>
                 </div>
 
+                <div className="modalEmploymentForm">
+                    <InputGroup size="sm" className="mb-3">
+                        <InputGroup.Prepend>
+                            <InputGroup.Text>Úvazek</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <DropdownButton
+                            as={InputGroup.Append}
+                            variant="outline-secondary"
+                            title={employmentForm}
+                            id="employmentForm"
+                        >
+                            <Dropdown.Item onClick={() => setEmploymentForm('Plný úvazek (HPP)')}>Plný úvazek (HPP)</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setEmploymentForm('Poloviční úvazek')}>Poloviční úvazek</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setEmploymentForm('Dohoda o provedení práce (DPP)')}>Dohoda o provedení práce (DPP)</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setEmploymentForm('Dohoda o provedení činnosti (DPČ)')}>Dohoda o provedení činnosti (DPČ)</Dropdown.Item>
+                        </DropdownButton>
+                    </InputGroup>
+                </div>
+
                 <div className="modalDate">
                     <div className="date">
                         <span>Datum nástupu</span>
@@ -272,7 +297,6 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
 
                     <Form.Group controlId="exampleForm.SelectCustomSizeSm">
                         <Form.Label>Délka doby výkonu práce</Form.Label>
-
                         <InputGroup size="sm">
                             <FormControl
                                 placeholder="1"
@@ -283,7 +307,6 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                                     inputValue: parseInt(e.target.value, 10)
                                 })}
                             />
-
                             <DropdownButton
                                 as={InputGroup.Append}
                                 variant="outline-secondary"
