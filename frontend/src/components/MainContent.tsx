@@ -14,7 +14,7 @@ export interface ISalary {
     location: string;
     salary: number;
     firstWorkDay: Date;
-    yearsWorked: number;
+    monthsWorked: number;
 }
 
 interface IMainContent {

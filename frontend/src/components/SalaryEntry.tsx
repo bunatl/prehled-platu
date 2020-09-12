@@ -29,7 +29,7 @@ const SalaryEntry: React.FC<ISalaryEntry> = ({ salary }) => {
                 const { data: { result: [ {
                     location: localLocation,
                     firstWorkDay: localFirstWorkDay,
-                    yearsWorked: localYearsWorked
+                    monthsWorked: localMonthsWorked
                 } ] } } = await axios.get(`${process.env.REACT_APP_SERVER_URI}/api/salary/${salary._id}`);
 
                 setLocations([ {
@@ -37,7 +37,9 @@ const SalaryEntry: React.FC<ISalaryEntry> = ({ salary }) => {
                     text: localLocation
                 } ]);
 
-                const inputYears = `${new Date(localFirstWorkDay).getFullYear()} - ${new Date(localFirstWorkDay).getFullYear() + parseInt(localYearsWorked)}`;
+                const endDate: Date = new Date(new Date(localFirstWorkDay).getFullYear(), new Date(localFirstWorkDay).getMonth() + parseInt(localMonthsWorked));
+                const inputYears: string = `${new Date(localFirstWorkDay).getMonth() + 1}/${new Date(localFirstWorkDay).getFullYear()} - 
+                    ${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
 
                 setYears([ {
                     value: inputYears,

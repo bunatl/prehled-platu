@@ -7,7 +7,9 @@ import {
     Button,
     InputGroup,
     FormControl,
-    Form
+    Form,
+    Dropdown,
+    DropdownButton
 } from 'react-bootstrap';
 
 import DatePicker from "react-datepicker";
@@ -33,7 +35,7 @@ const initModalInputs: ISalary = {
     technologies: [],
     firstWorkDay: new Date(),
     salary: 0,
-    yearsWorked: 1,
+    monthsWorked: 12,
     _id: ""
 }
 
@@ -45,57 +47,59 @@ type ActionTypes =
     | { type: 'technologies'; inputValue: string }
     | { type: 'firstWorkDay'; inputValue: Date }
     | { type: 'salary'; inputValue: number }
-    | { type: 'yearsWorked'; inputValue: number }
+    | { type: 'monthsWorked'; inputValue: number }
     | { type: ''; }
 
-const modalInputReducer = (state: ISalary, action: ActionTypes) => {
-    switch (action.type) {
-        case 'position':
-            return {
-                ...state,
-                position: action.inputValue
-            };
-        case 'company':
-            return {
-                ...state,
-                company: action.inputValue
-            };
-        case 'description':
-            return {
-                ...state,
-                description: action.inputValue
-            };
-        case 'location':
-            return {
-                ...state,
-                location: action.inputValue
-            };
-        case 'technologies':
-            return {
-                ...state,
-                technologies: action.inputValue.split(','),
-            };
-        case 'firstWorkDay':
-            return {
-                ...state,
-                firstWorkDay: action.inputValue
-            };
-        case 'salary':
-            return {
-                ...state,
-                salary: action.inputValue
-            };
-        case 'yearsWorked':
-            return {
-                ...state,
-                yearsWorked: action.inputValue
-            };
-        default:
-            return initModalInputs;
-    }
-}
-
 const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted, closeModal }) => {
+    const [ timeframe, setTimeframe ] = useState<boolean>(true);
+    const modalInputReducer = (state: ISalary, action: ActionTypes) => {
+        switch (action.type) {
+            case 'position':
+                return {
+                    ...state,
+                    position: action.inputValue
+                };
+            case 'company':
+                return {
+                    ...state,
+                    company: action.inputValue
+                };
+            case 'description':
+                return {
+                    ...state,
+                    description: action.inputValue
+                };
+            case 'location':
+                return {
+                    ...state,
+                    location: action.inputValue
+                };
+            case 'technologies':
+                return {
+                    ...state,
+                    technologies: action.inputValue.split(','),
+                };
+            case 'firstWorkDay':
+                return {
+                    ...state,
+                    firstWorkDay: action.inputValue
+                };
+            case 'salary':
+                return {
+                    ...state,
+                    salary: action.inputValue
+                };
+            case 'monthsWorked':
+                return {
+                    ...state,
+                    monthsWorked: timeframe ? action.inputValue * 12 : action.inputValue
+                };
+            default:
+                return initModalInputs;
+        }
+    }
+    const [ modalInputs, dispatch ] = useReducer(modalInputReducer, initModalInputs);
+
     const [ pickerDate, setPickerDate ] = useState<IPickerDate>({
         startDate: new Date()
     });
@@ -107,12 +111,17 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
     }, [ navBool ])
 
     const close = () => {
-        dispatch({ type: '' });
         setShow(false);
+
+        // reset all modal states
+        dispatch({ type: '' });
+        setPickerDate({
+            startDate: new Date()
+        });
+        setTimeframe(true);
+
         closeModal();
     }
-
-    const [ modalInputs, dispatch ] = useReducer(modalInputReducer, initModalInputs);
 
     const insertAndClose = async () => {
         try {
@@ -246,34 +255,44 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                         <span>Datum nástupu</span>
                         <DatePicker
                             id="dateInput"
-                            closeOnScroll={true}
-                            dateFormat="📅 dd.MM.yyyy"
-                            // locale="cs-CZ"
-                            withPortal
+                            dateFormat="📅 MMMM yyyy"
                             selected={pickerDate.startDate}
-                            // future rates rates aren't available
+                            showMonthYearPicker
+                            showFullMonthYearPicker
                             maxDate={new Date()}
                             onChange={(date: Date) => {
                                 setPickerDate({ startDate: date });
                                 dispatch({
                                     type: 'firstWorkDay',
-                                    inputValue: new Date(date.getFullYear(), date.getMonth() + 1, date.getDate())
+                                    inputValue: new Date(date.getFullYear(), date.getMonth(), 10)
                                 });
                             }}
                         />
                     </div>
 
                     <Form.Group controlId="exampleForm.SelectCustomSizeSm">
-                        <Form.Label>Délka doby výkonu (v letech)</Form.Label>
-                        <Form.Control as="select" custom
-                            onChange={e => dispatch({
-                                type: 'yearsWorked',
-                                inputValue: parseInt(e.target.value, 10)
-                            })}>
-                            {Array(15).fill(0).map((v, i) => (
-                                <option key={i} value={1 + i}>{1 + i}</option>
-                            ))}
-                        </Form.Control>
+                        <Form.Label>Délka doby výkonu práce</Form.Label>
+
+                        <InputGroup size="sm">
+                            <FormControl
+                                placeholder="1"
+                                aria-label="timeframe"
+                                aria-describedby="timeframe"
+                                onChange={e => dispatch({
+                                    type: 'monthsWorked',
+                                    inputValue: parseInt(e.target.value, 10)
+                                })}
+                            />
+
+                            <DropdownButton
+                                as={InputGroup.Append}
+                                variant="outline-secondary"
+                                title={timeframe ? 'let' : 'měsíců'}
+                                id="timeframe"
+                            >
+                                <Dropdown.Item onClick={() => setTimeframe(!timeframe)}>{timeframe ? 'měsíců' : 'let'}</Dropdown.Item>
+                            </DropdownButton>
+                        </InputGroup>
                     </Form.Group>
                 </div>
             </Modal.Body>

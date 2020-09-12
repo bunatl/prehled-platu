@@ -28,9 +28,8 @@ const schema = Joi.object({
         .less('now')
         .required(),
 
-    yearsWorked: Joi.number()
-        .min(1)
-        .max(new Date().getFullYear() - 1993),
+    monthsWorked: Joi.number()
+        .min(1),
 
     _id: Joi.string()
         .allow(null, '')

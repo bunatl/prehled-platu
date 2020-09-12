@@ -41,7 +41,6 @@ router.get('/salary/:id', async (req, res, next) => {
 
 router.post('/salary/add', async (req, res, next) => {
     try {
-        console.log(req.body);
         // validate input
         const result = await SalaryEntrySchema.validateAsync(req.body);
         // remove _id property from newly created salary object
