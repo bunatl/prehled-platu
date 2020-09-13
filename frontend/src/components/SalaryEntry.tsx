@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { ISalary } from './MainContent';
+import { ISalary, employmentFormTypes } from './MainContent';
 
 const axios = require('axios');
 
@@ -22,12 +22,14 @@ const SalaryEntry: React.FC<ISalaryEntry> = ({ salary }) => {
 
     const [ locations, setLocations ] = useState<inputField[]>([ initInputField ]);
     const [ years, setYears ] = useState<inputField[]>([ initInputField ]);
+    const [ employmentForm, setEmploymentForm ] = useState<employmentFormTypes[]>([ "Plný úvazek (HPP)" ]);
 
     useEffect(() => {
         const fetchEntryData = async () => {
             try {
                 const { data: { result: [ {
                     location: localLocation,
+                    employmentForm: localEmploymentForm,
                     firstWorkDay: localFirstWorkDay,
                     monthsWorked: localMonthsWorked
                 } ] } } = await axios.get(`${process.env.REACT_APP_SERVER_URI}/api/salary/${salary._id}`);
@@ -45,6 +47,8 @@ const SalaryEntry: React.FC<ISalaryEntry> = ({ salary }) => {
                     value: inputYears,
                     text: inputYears
                 } ]);
+
+                setEmploymentForm([ localEmploymentForm ])
             } catch (error) {
                 console.error(error.err);
             }
@@ -69,15 +73,22 @@ const SalaryEntry: React.FC<ISalaryEntry> = ({ salary }) => {
                 <div className="selectors">
                     <div className="location">
                         <select name="location">
-                            {locations.map((loc, i) => (
+                            {locations.map((loc: inputField, i: number) => (
                                 <option key={i} value={loc.value}>{loc.text}</option>
                             ))}
                         </select>
                     </div>
                     <div className="year">
                         <select name="year">
-                            {years.map((year, i) => (
+                            {years.map((year: inputField, i: number) => (
                                 <option key={i} value={year.value}>{year.text}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="employmentForm">
+                        <select name="employmentForm">
+                            {employmentForm.map((form: employmentFormTypes, i: number) => (
+                                <option key={i} value={form}>{form}</option>
                             ))}
                         </select>
                     </div>

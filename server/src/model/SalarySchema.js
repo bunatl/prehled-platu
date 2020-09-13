@@ -19,6 +19,9 @@ const schema = Joi.object({
     location: Joi.string()
         .required(),
 
+    employmentForm: Joi.string()
+        .required(),
+
     salary: Joi.number()
         .min(14000)
         .max(1000000),

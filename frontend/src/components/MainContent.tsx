@@ -13,10 +13,17 @@ export interface ISalary {
     technologies: string[];
     description: string;
     location: string;
+    employmentForm: employmentFormTypes;
     salary: number;
     firstWorkDay: Date;
     monthsWorked: number;
 }
+
+export type employmentFormTypes =
+    | 'Plný úvazek (HPP)'
+    | 'Poloviční úvazek'
+    | 'Dohoda o provedení práce (DPP)'
+    | 'Dohoda o provedení činnosti (DPČ)'
 
 interface IMainContent {
     fetchDatabase: boolean;

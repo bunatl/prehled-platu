@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 
-import { ISalary } from './MainContent'
+import { ISalary, employmentFormTypes } from './MainContent'
 
 import {
     Modal,
@@ -33,6 +33,7 @@ const initModalInputs: ISalary = {
     description: "",
     location: "",
     technologies: [],
+    employmentForm: "Plný úvazek (HPP)",
     firstWorkDay: new Date(),
     salary: 0,
     monthsWorked: 12,
@@ -45,16 +46,11 @@ type ActionTypes =
     | { type: 'description'; inputValue: string }
     | { type: 'location'; inputValue: string }
     | { type: 'technologies'; inputValue: string }
+    | { type: 'employmentForm'; inputValue: employmentFormTypes }
     | { type: 'firstWorkDay'; inputValue: Date }
     | { type: 'salary'; inputValue: number }
     | { type: 'monthsWorked'; inputValue: number }
     | { type: ''; }
-
-type employmentFormTypes =
-    | 'Plný úvazek (HPP)'
-    | 'Poloviční úvazek'
-    | 'Dohoda o provedení práce (DPP)'
-    | 'Dohoda o provedení činnosti (DPČ)'
 
 const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted, closeModal }) => {
     const [ timeframe, setTimeframe ] = useState<boolean>(true);
@@ -90,6 +86,11 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                     ...state,
                     firstWorkDay: action.inputValue
                 };
+            case 'employmentForm':
+                return {
+                    ...state,
+                    employmentForm: action.inputValue
+                };
             case 'salary':
                 return {
                     ...state,
@@ -113,14 +114,22 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
     });
 
     useEffect(() => {
+        dispatch({
+            type: 'employmentForm',
+            inputValue: employmentForm
+        })
+    }, [ employmentForm ]);
+
+    useEffect(() => {
         setShow(navBool);
-    }, [ navBool ])
+    }, [ navBool ]);
 
     const close = () => {
         setShow(false);
 
         // reset all modal states
         dispatch({ type: '' });
+        setEmploymentForm('Plný úvazek (HPP)');
         setPickerDate({
             startDate: new Date()
         });
