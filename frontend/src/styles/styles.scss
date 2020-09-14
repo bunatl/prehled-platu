@@ -29,8 +29,19 @@ body{
     width: 80%;
     background: darkgray;
     border-radius: .75em;
-
+    
     // header, main, footer
+    > div{
+        // 100vh minus the margins and paddings from #root
+        min-height: calc(100vh - 4em - 3em);
+        @include flex(column, nowrap, space-between);
+
+        > main{
+            // flex main to full height
+            flex: 1;
+        }
+    }
+    
 
     footer{
         margin-top: 1em

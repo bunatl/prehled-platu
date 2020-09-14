@@ -23,8 +23,10 @@ const schema = Joi.object({
         .required(),
 
     salary: Joi.number()
-        .min(14000)
-        .max(1000000),
+        .min(1),
+
+    salaryRate: Joi.string()
+        .required(),
 
     firstWorkDay: Joi.date()
         .greater('1-1-1993')

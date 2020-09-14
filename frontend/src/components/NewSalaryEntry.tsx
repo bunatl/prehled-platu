@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 
-import { ISalary, employmentFormTypes } from './MainContent'
+import { ISalary, employmentFormTypes, SalaryRateTypes } from './MainContent'
 
 import {
     Modal,
@@ -36,6 +36,7 @@ const initModalInputs: ISalary = {
     employmentForm: "Plný úvazek (HPP)",
     firstWorkDay: new Date(),
     salary: 0,
+    salaryRate: "měs",
     monthsWorked: 12,
     _id: ""
 }
@@ -49,6 +50,7 @@ type ActionTypes =
     | { type: 'employmentForm'; inputValue: employmentFormTypes }
     | { type: 'firstWorkDay'; inputValue: Date }
     | { type: 'salary'; inputValue: number }
+    | { type: 'salaryRate'; inputValue: SalaryRateTypes }
     | { type: 'monthsWorked'; inputValue: number }
     | { type: ''; }
 
@@ -95,6 +97,11 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                 return {
                     ...state,
                     salary: action.inputValue
+                };
+            case 'salaryRate':
+                return {
+                    ...state,
+                    salaryRate: action.inputValue
                 };
             case 'monthsWorked':
                 return {
@@ -262,6 +269,20 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                                 inputValue: parseInt(e.target.value, 10)
                             })}
                         />
+                        <InputGroup.Append>
+                            <InputGroup.Text>/</InputGroup.Text>
+                        </InputGroup.Append>
+                        <DropdownButton
+                            as={InputGroup.Append}
+                            variant="outline-secondary"
+                            title={modalInputs.salaryRate}
+                            id="salaryRate"
+                        >
+                            <Dropdown.Item onClick={() => dispatch({ type: 'salaryRate', inputValue: 'hod' })}>hod</Dropdown.Item>
+                            <Dropdown.Item onClick={() => dispatch({ type: 'salaryRate', inputValue: 'měs' })}>měs</Dropdown.Item>
+                            <Dropdown.Item onClick={() => dispatch({ type: 'salaryRate', inputValue: 'MD' })}>MD</Dropdown.Item>
+                            <Dropdown.Item onClick={() => dispatch({ type: 'salaryRate', inputValue: 'rok' })}>rok</Dropdown.Item>
+                        </DropdownButton>
                     </InputGroup>
                 </div>
 

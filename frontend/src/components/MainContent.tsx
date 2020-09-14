@@ -15,6 +15,7 @@ export interface ISalary {
     location: string;
     employmentForm: employmentFormTypes;
     salary: number;
+    salaryRate: SalaryRateTypes;
     firstWorkDay: Date;
     monthsWorked: number;
 }
@@ -24,6 +25,12 @@ export type employmentFormTypes =
     | 'Poloviční úvazek'
     | 'Dohoda o provedení práce (DPP)'
     | 'Dohoda o provedení činnosti (DPČ)'
+
+export type SalaryRateTypes =
+    | 'hod'
+    | 'MD'
+    | 'měs'
+    | 'rok'
 
 interface IMainContent {
     fetchDatabase: boolean;

@@ -95,7 +95,7 @@ const SalaryEntry: React.FC<ISalaryEntry> = ({ salary }) => {
                 </div>
                 <div className="salaryScale">
                     {/* Average */}
-                    <div>Průměrně na pozici: {salary.salary}</div>
+                    <div>Průměrně na pozici: {`${salary.salary} / ${salary.salaryRate}`}</div>
                     {/* Industry interval */}
                     <div>Průměr odvětví: {`0 - 0`}</div>
                     {/* Company interval */}
