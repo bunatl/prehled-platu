@@ -20,7 +20,7 @@ const PageHeader: React.FC<IPageHeader> = ({ updateEntries }) => {
                 </div>
                 <NewSalaryEntry navBool={modal} entryInserted={() => updateEntries()} closeModal={() => setModal(false)} />
             </nav>
-            <h1>Prehled platu</h1>
+            <h1>Přehled platů</h1>
         </header>
     );
 }

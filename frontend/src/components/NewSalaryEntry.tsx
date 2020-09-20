@@ -261,6 +261,8 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                             <InputGroup.Text>Plat</InputGroup.Text>
                         </InputGroup.Prepend>
                         <FormControl
+                            type="number"
+                            min="0"
                             placeholder="50 000"
                             aria-label="salary"
                             aria-describedby="modalInputSalary"

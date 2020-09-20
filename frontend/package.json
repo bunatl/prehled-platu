@@ -1,11 +1,8 @@
 {
   "name": "prehled-platu",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^10.4.9",
-    "@testing-library/user-event": "^12.1.3",
     "@types/jest": "^26.0.10",
     "@types/node": "^14.6.2",
     "@types/react": "^16.9.48",
@@ -21,12 +18,18 @@
     "react-scripts": "3.4.3",
     "typescript": "^4.0.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^10.4.9",
+    "@testing-library/user-event": "^12.1.3"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "cd ../server && npm run dev",
+    "fullstack": "concurrently \"npm start\" \"npm run server\""
   },
   "eslintConfig": {
     "extends": "react-app"

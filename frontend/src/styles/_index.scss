@@ -11,7 +11,7 @@ main{
                 width: 100%;
                 // input insed parent div: https://stackoverflow.com/questions/1633522/html-input-element-wider-than-containing-div
                 box-sizing: border-box;
-            }
+            } 
 
             #parameters{
                 @include flex(column, nowrap, space-around);
@@ -19,7 +19,7 @@ main{
                 
                 > div{
                     margin: 0 auto;
-
+                    text-align: left;
                 }
                 
                 @media only screen and (min-width: $mobile-width){
