@@ -35,7 +35,7 @@ const initModalInputs: ISalary = {
     technologies: [],
     employmentForm: "Plný úvazek (HPP)",
     firstWorkDay: new Date(),
-    salary: 0,
+    salary: 50000,
     salaryRate: "měs",
     monthsWorked: 12,
     _id: ""
@@ -126,6 +126,7 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
             inputValue: employmentForm
         })
     }, [ employmentForm ]);
+
 
     useEffect(() => {
         setShow(navBool);

@@ -3,12 +3,17 @@ const router = express.Router();
 
 const SalaryEntrySchema = require('../model/SalarySchema');
 
-// == DB connection == 
-const db = require('monk')('localhost/salaries-cz');
+const db = require('../server');
+
+db.then((x) => {
+    console.log(x);
+});
 // get or create a collection
 const salaries = db.get('salaries');
+const companies = db.get('companies');
 
-router.get('/salary/:id', async (req, res, next) => {
+
+router.get('/:id', async (req, res, next) => {
     try {
         // set param to all or an individual ID
         let searchParam = {};
@@ -39,7 +44,7 @@ router.get('/salary/:id', async (req, res, next) => {
     db.close();
 });
 
-router.post('/salary/add', async (req, res, next) => {
+router.post('/add', async (req, res, next) => {
     try {
         // validate input
         const result = await SalaryEntrySchema.validateAsync(req.body);
@@ -49,13 +54,36 @@ router.post('/salary/add', async (req, res, next) => {
         // search if entry already exists in DB
         await salaries.findOne(result)
             .then((doc) => {
-                console.log(doc);
                 // document with matching criteria or null
                 if (doc !== null)
                     throw new Error(`Entry with ID: ${ doc._id } is already in DB.`);
             });
         // if entry is unique, insert into DB
         await salaries.insert(result);
+
+        result.technologies.forEach(async technology => {
+            await companies
+                .findOneAndUpdate(
+                    { name: technology },
+                    {
+                        $set:
+                            { "occurrences": 5 }
+                    },
+                    { new: true }
+                )
+                .then(updatedDoc => {
+                    console.log("then" + updatedDoc);
+                    if (updatedDoc)
+                        console.log(updatedDoc);
+                    else
+                        console.log("none");
+                })
+                .catch(err => {
+                    console.error(err);
+                    console.log(err);
+                });
+        }
+        );
 
         res.json({
             msg: "Your entry has been successfully added to the database.",

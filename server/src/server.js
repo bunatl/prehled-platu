@@ -25,14 +25,11 @@ app.use(cors({
 // recognize the incoming Request Object as a JSON Object
 app.use(express.json());
 
+// == DB connection == 
+// const db = 
+module.exports = require('monk')('localhost:27017/salaries-cz');
 /* == Routing == */
-app.get('/', (req, res) => {
-    res.json({
-        msg: "hello from server file server.js"
-    });
-});
-
-app.use('/api', Salary);
+app.use('/api/salary', Salary);
 
 /* == Listen == */
 const port = process.env.PORT || 5000;

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useReducer } from 'react';
+import React, { useState, useRef, useReducer, useEffect } from 'react';
 
 type ToogleActions =
     | { type: 'technologies' }
@@ -54,6 +54,9 @@ const Params: React.FC = () => {
     const [ technologies ] = useState<string[]>([
         "ReactJS", "Node.js", "C++", "JAVA"
     ]);
+    useEffect(() => {
+
+    }, [])
     const wrapperTechnologies = useRef<HTMLDivElement>(null);
 
     // companies
