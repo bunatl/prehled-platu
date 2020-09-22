@@ -3,15 +3,12 @@ const router = express.Router();
 
 const SalaryEntrySchema = require('../model/SalarySchema');
 
-const db = require('../server');
+// == import DB connection == 
+const db = require('../db');
 
-db.then((x) => {
-    console.log(x);
-});
 // get or create a collection
 const salaries = db.get('salaries');
 const companies = db.get('companies');
-
 
 router.get('/:id', async (req, res, next) => {
     try {
@@ -41,8 +38,8 @@ router.get('/:id', async (req, res, next) => {
             err: err.message
         });
     }
-    db.close();
 });
+// db.close();
 
 router.post('/add', async (req, res, next) => {
     try {
@@ -61,22 +58,23 @@ router.post('/add', async (req, res, next) => {
         // if entry is unique, insert into DB
         await salaries.insert(result);
 
-        result.technologies.forEach(async technology => {
-            await companies
+        result.technologies.forEach(technology => {
+            companies
                 .findOneAndUpdate(
                     { name: technology },
                     {
-                        $set:
-                            { "occurrences": 5 }
-                    },
-                    { new: true }
+                        $inc:
+                            { occurrences: 1 }
+                    }
                 )
-                .then(updatedDoc => {
-                    console.log("then" + updatedDoc);
-                    if (updatedDoc)
-                        console.log(updatedDoc);
-                    else
-                        console.log("none");
+                .then(async updatedDoc => {
+                    console.log("then: " + updatedDoc);
+                    // if null, add
+                    if (!updatedDoc)
+                        await companies.insert({
+                            name: technology,
+                            occurrences: 1
+                        });
                 })
                 .catch(err => {
                     console.error(err);
@@ -98,7 +96,7 @@ router.post('/add', async (req, res, next) => {
             err: err.message
         });
     }
-    db.close();
+    // db.close();
 });
 
 module.exports = router;
