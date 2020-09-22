@@ -5,6 +5,7 @@ const helmet = require('helmet');
 require('dotenv').config();
 
 const Salary = require('./api/Salary');
+const Technology = require('./api/Technology');
 
 const app = express();
 
@@ -25,12 +26,9 @@ app.use(cors({
 // recognize the incoming Request Object as a JSON Object
 app.use(express.json());
 
-// == import DB connection == 
-const db = require('./db');
-db.then(() => console.log("monk"));
-
 /* == Routing == */
 app.use('/api/salary', Salary);
+app.use('/api/technologies', Technology);
 
 /* == Listen == */
 const port = process.env.PORT || 5000;

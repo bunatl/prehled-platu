@@ -1,4 +1,5 @@
 import React, { useState, useRef, useReducer, useEffect } from 'react';
+const axios = require('axios');
 
 type ToogleActions =
     | { type: 'technologies' }
@@ -51,11 +52,17 @@ const Params: React.FC = () => {
     const [ toogle, dispatch ] = useReducer(handleToogles, initToogle)
 
     // technologies
-    const [ technologies ] = useState<string[]>([
-        "ReactJS", "Node.js", "C++", "JAVA"
-    ]);
+    const [ technologies, setTetchnologies ] = useState<string[]>([]);
     useEffect(() => {
-
+        const fetchTechnologies = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URI}/api/technologies`);
+                setTetchnologies(response.data.result);
+            } catch (error) {
+                console.error(error.err);
+            }
+        }
+        fetchTechnologies();
     }, [])
     const wrapperTechnologies = useRef<HTMLDivElement>(null);
 

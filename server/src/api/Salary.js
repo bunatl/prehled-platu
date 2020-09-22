@@ -8,7 +8,7 @@ const db = require('../db');
 
 // get or create a collection
 const salaries = db.get('salaries');
-const companies = db.get('companies');
+const technologies = db.get('technologies');
 
 router.get('/:id', async (req, res, next) => {
     try {
@@ -58,8 +58,10 @@ router.post('/add', async (req, res, next) => {
         // if entry is unique, insert into DB
         await salaries.insert(result);
 
+        // add technologies to technologies collection
         result.technologies.forEach(technology => {
-            companies
+            technology = technology.trim();
+            technologies
                 .findOneAndUpdate(
                     { name: technology },
                     {
@@ -68,10 +70,9 @@ router.post('/add', async (req, res, next) => {
                     }
                 )
                 .then(async updatedDoc => {
-                    console.log("then: " + updatedDoc);
                     // if null, add
                     if (!updatedDoc)
-                        await companies.insert({
+                        await technologies.insert({
                             name: technology,
                             occurrences: 1
                         });
