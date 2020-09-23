@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 
 import NewSalaryEntry from './NewSalaryEntry'
 
-interface IPageHeader {
-    updateEntries: () => void
-}
+import ModalContext from './ModalContext';
 
-const PageHeader: React.FC<IPageHeader> = ({ updateEntries }) => {
-    const [ modal, setModal ] = useState<boolean>(false);
+const PageHeader: React.FC = () => {
+    const { setModal } = useContext(ModalContext);
 
     return (
         <header>
@@ -18,7 +16,7 @@ const PageHeader: React.FC<IPageHeader> = ({ updateEntries }) => {
                     <div>Link</div>
                     <div onClick={() => setModal(true)}>Přidej záznam</div>
                 </div>
-                <NewSalaryEntry navBool={modal} entryInserted={() => updateEntries()} closeModal={() => setModal(false)} />
+                <NewSalaryEntry />
             </nav>
             <h1>Přehled platů</h1>
         </header>

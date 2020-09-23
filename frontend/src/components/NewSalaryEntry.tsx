@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useContext } from 'react';
 
 import { ISalary, employmentFormTypes, SalaryRateTypes } from './MainContent'
+import ModalContext from './ModalContext';
 
 import {
     Modal,
@@ -16,12 +17,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const axios = require('axios');
-
-interface INewSalaryEntryProps {
-    navBool: boolean;
-    entryInserted: () => void;
-    closeModal: () => void;
-}
 
 interface IPickerDate {
     startDate: Date;
@@ -54,7 +49,8 @@ type ActionTypes =
     | { type: 'monthsWorked'; inputValue: number }
     | { type: ''; }
 
-const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted, closeModal }) => {
+const NewSalaryEntry: React.FC = () => {
+    const { modal, setModal } = useContext(ModalContext);
     const [ timeframe, setTimeframe ] = useState<boolean>(true);
     const modalInputReducer = (state: ISalary, action: ActionTypes) => {
         switch (action.type) {
@@ -114,7 +110,6 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
     }
 
     const [ modalInputs, dispatch ] = useReducer(modalInputReducer, initModalInputs);
-    const [ show, setShow ] = useState<boolean>(navBool);
     const [ employmentForm, setEmploymentForm ] = useState<employmentFormTypes>('Plný úvazek (HPP)');
     const [ pickerDate, setPickerDate ] = useState<IPickerDate>({
         startDate: new Date()
@@ -127,14 +122,7 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
         })
     }, [ employmentForm ]);
 
-
-    useEffect(() => {
-        setShow(navBool);
-    }, [ navBool ]);
-
     const close = () => {
-        setShow(false);
-
         // reset all modal states
         dispatch({ type: '' });
         setEmploymentForm('Plný úvazek (HPP)');
@@ -143,7 +131,7 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
         });
         setTimeframe(true);
 
-        closeModal();
+        setModal(false);
     }
 
     const insertAndClose = async () => {
@@ -156,8 +144,6 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
                 url: `${process.env.REACT_APP_SERVER_URI}/api/salary/add`,
                 data: modalInputs
             });
-            if (response.status === 200)
-                entryInserted();
         } catch (error) {
             console.log(error.response.data.err);
         }
@@ -165,7 +151,7 @@ const NewSalaryEntry: React.FC<INewSalaryEntryProps> = ({ navBool, entryInserted
     }
 
     return (
-        <Modal show={show} onHide={close} animation={true} className="modalNewSalaryEntry">
+        <Modal show={modal} onHide={close} animation={true} className="modalNewSalaryEntry">
             <Modal.Header closeButton>
                 <Modal.Title>Přidat nový záznam o platu</Modal.Title>
             </Modal.Header>

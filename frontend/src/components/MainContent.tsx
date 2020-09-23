@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
 
 import SearchSection from './SearchSection';
 import SalaryEntry from './SalaryEntry';
+import ModalContext from './ModalContext';
 
 const axios = require('axios');
 
@@ -32,13 +33,11 @@ export type SalaryRateTypes =
     | 'měs'
     | 'rok'
 
-interface IMainContent {
-    fetchDatabase: boolean;
-}
-
-const MainContent: React.FC<IMainContent> = ({ fetchDatabase }) => {
+const MainContent: React.FC = () => {
     const [ salaries, setSalaries ] = useState<ISalary[]>([]);
     const [ loading, setLoading ] = useState<boolean>(false);
+
+    const { modal } = useContext(ModalContext);
 
     useEffect(() => {
         const fetchSalaries = async () => {
@@ -53,7 +52,7 @@ const MainContent: React.FC<IMainContent> = ({ fetchDatabase }) => {
             }
         }
         fetchSalaries();
-    }, [ fetchDatabase ])
+    }, [ modal ])
 
     return (
         <main>
